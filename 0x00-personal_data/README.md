@@ -1,6 +1,6 @@
 # 0x00. Personal data
 
-![alx image meme](/info.png)
+![alx image meme](./info.png)
 
 ## Resources
 ### Read or watch:
