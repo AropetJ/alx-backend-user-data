@@ -64,7 +64,6 @@ def get_db() -> mysql.connector.connection.MySQLConnection:
 def main():
     """
     Logs the information about user records in a table.
-
     This function retrieves user records from a database table and
     logs the information using a logger.
     Returns:
@@ -93,7 +92,6 @@ class RedactingFormatter(logging.Formatter):
     Args:
         fields (List[str]): A list of field names to be redacted.
     """
-
     REDACTION = "***"
     FORMAT = "[HOLBERTON] %(name)s %(levelname)s %(asctime)-15s: %(message)s"
     FORMAT_FIELDS = ('name', 'levelname', 'asctime', 'message')
