@@ -80,7 +80,7 @@ def main():
         rows = cursor.fetchall()
         for row in rows:
             record = map(lambda x: '{}={}'.format(x[0], x[1]),
-                zip(columns, row))
+                         zip(columns, row))
             msg = '{};'.format('; '.join(list(record)))
             args = ("user_data", logging.INFO, None, None, msg, None, None)
             log_record = logging.LogRecord(*args)
