@@ -7,12 +7,12 @@ from typing import List, TypeVar
 
 
 class Auth:
-    ''' Auth class
+    '''Auth class
     '''
     def require_auth(self, path: str, excluded_paths: List[str]) -> bool:
         ''' require_auth method
         '''
-        if path is None or excluded_paths is None or len(excluded_paths) == 0:
+        if path is not None and excluded_paths is not None:
             for exclusion_path in map(lambda x: x.strip(), excluded_paths):
                 pattern = ''
                 if exclusion_path[-1] == '*':
