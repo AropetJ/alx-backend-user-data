@@ -2,8 +2,9 @@
 ''' Module of Users views
 '''
 
-from flask import request
 import os
+from flask import request
+from datetime import datetime, timedelta
 
 from .auth import SessionAuth
 
@@ -24,26 +25,25 @@ class SessionExpAuth(SessionAuth):
         ''' create session
         '''
         session_id = super().create_session(user_id)
-        if session_id is None:
+        if type(session_id) is not str or session_id is None:
             return None
         self.user_id_by_session_id[session_id] = {
-            'user_id': user_id, 'created_at': self.created_at()
+            'user_id': user_id, 'created_at': datetime.now()
             }
         return session_id
 
     def user_id_for_session_id(self, session_id: str = None) -> str:
         ''' user id for session id
         '''
-        if session_id is None or type(session_id) is not str:
-            return None
-        session_dictionary = self.user_id_by_session_id.get(session_id)
-        if session_dictionary is None:
-            return None
-        if self.session_duration <= 0:
-            return session_dictionary.get('user_id')
-        if 'created_at' not in session_dictionary:
-            return None
-        if (self.created_at() - session_dictionary.get(
-                'created_at')) > self.session_duration:
-            return None
-        return session_dictionary.get('user_id')
+        if session_id in self.user_id_by_session_id:
+            session_dict = self.user_id_by_session_id[session_id]
+            if self.session_duration <= 0:
+                return session_dict['user_id']
+            if 'created_at' not in session_dict:
+                return None
+            cur_time = datetime.now()
+            time_span = timedelta(seconds=self.session_duration)
+            exp_time = session_dict['created_at'] + time_span
+            if exp_time < cur_time:
+                return None
+            return session_dict['user_id']
