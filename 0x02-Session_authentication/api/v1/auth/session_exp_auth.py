@@ -15,26 +15,32 @@ class SessionExpAuth(SessionAuth):
     def __init__(self):
         ''' init
         '''
+        
+    def __init__(self) -> None:
+        """Initializes a new SessionExpAuth instance.
+        """
         super().__init__()
         try:
             self.session_duration = int(os.getenv('SESSION_DURATION', '0'))
         except Exception:
             self.session_duration = 0
 
-    def create_session(self, user_id: str = None) -> str:
-        ''' create session
-        '''
+    def create_session(self, user_id=None):
+        """Creates a session id for the user.
+        """
         session_id = super().create_session(user_id)
-        if type(session_id) is not str or session_id is None:
+        if type(session_id) != str:
             return None
         self.user_id_by_session_id[session_id] = {
-            'user_id': user_id, 'created_at': datetime.now()
-            }
+            'user_id': user_id,
+            'created_at': datetime.now(),
+        }
         return session_id
 
-    def user_id_for_session_id(self, session_id: str = None) -> str:
-        ''' user id for session id
-        '''
+    def user_id_for_session_id(self, session_id=None) -> str:
+        """Retrieves the user id of the user associated with
+        a given session id.
+        """
         if session_id in self.user_id_by_session_id:
             session_dict = self.user_id_by_session_id[session_id]
             if self.session_duration <= 0:
