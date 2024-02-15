@@ -1,8 +1,11 @@
 #!/usr/bin/env python3
 ''' Module of Auth views
 '''
+from typing import TypeVar, Tuple
 import base64
 import binascii
+
+from models.user import User
 from .auth import Auth
 
 
@@ -49,3 +52,18 @@ class BasicAuth(Auth):
         if ':' not in decoded_base64_authorization_header:
             return (None, None)
         return tuple(decoded_base64_authorization_header.split(':', 1))
+
+    def user_object_from_credentials(self, user_email: str, user_pwd: str
+                                     ) -> TypeVar('User'):
+        ''' user_object_from_credentials method
+        '''
+        if type(user_email) == str and type(user_pwd) == str:
+            try:
+                users = User.search({'email': user_email})
+            except Exception:
+                return None
+            if users is None or len(users) == 0:
+                return None
+            if users[0].is_valid_password(user_pwd):
+                return users[0]
+        return None
