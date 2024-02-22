@@ -97,4 +97,3 @@ class Auth:
         else:
             self._db.update_user(subject.id, _hash_password(password))
             self._db.update_user(subject.id, reset_token=None)
-            return None
