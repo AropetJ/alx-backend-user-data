@@ -78,9 +78,9 @@ class Auth:
             subject = self._db.find_user_by(email=email)
         except NoResultFound:
             subject = None
-        if subject:
-            new_token = _generate_uuid()
-            self._db.update_user(subject.id, new_token=new_token)
-            return new_token
-        else:
+        if subject is None:
             raise ValueError
+        else:
+            reset_token = _generate_uuid()
+            self._db.update_user(subject.id, reset_token=reset_token)
+            return reset_token
