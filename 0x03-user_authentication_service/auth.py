@@ -93,10 +93,10 @@ class Auth:
         except NoResultFound:
             subject = None
         if subject is None:
-            raise ValueError
-        else:
-            self._db.update_user(
-                subject.id,
-                hashed_password=_hash_password(password)
-                reset_token=None
-                )
+            raise ValueError()
+        updated_password = _hash_password(password)
+        self._db.update_user(
+            subject.id,
+            hashed_password=updated_password,
+            reset_token=None,
+        )
