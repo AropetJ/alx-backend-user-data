@@ -49,5 +49,20 @@ def login() -> str:
         return jsonify({"message": "wrong password"}), 401
 
 
+@app.route('/sessions', methods=['DELETE'], strict_slashes=False)
+def logout() -> str:
+    """DELETE /sessions
+    JSON body:
+      - session_id: string -> session ID
+    Return: {"message": "Bienvenue"}
+    """
+    session_id = request.cookies.get('session_id')
+    if session_id:
+        user = AUTH.get_user_from_session_id(session_id)
+        if user:
+            AUTH.destroy_session(user)
+    return jsonify({"message": "Bienvenue"})
+
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port="5003")
