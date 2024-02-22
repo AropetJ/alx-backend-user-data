@@ -1,3 +1,1 @@
-# 0x03. User authentication service
-
-![userdata image](./userdata.jpg)
+#!/usr/bin/env python3
