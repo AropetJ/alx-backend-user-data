@@ -54,7 +54,7 @@ def logout() -> str:
     """DELETE /sessions
     JSON body:
       - session_id: string -> session ID
-    Return: {"message": "Bienvenue"}
+    Return: redirect to /
     """
     session_id = request.cookies.get("session_id")
     user = AUTH.get_user_from_session_id(session_id)
