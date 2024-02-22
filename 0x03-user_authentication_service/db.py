@@ -43,3 +43,19 @@ class DB():
             self._session.rollback()
             new_user = None
         return new_user
+
+    def find_user_by(self, **kwargs) -> User:
+        """Returns the first row found in the users table
+        """
+        key, value = [], []
+        for k, v in kwargs.items():
+            if not hasattr(User, k):
+                raise InvalidRequestError
+            else:
+                key.append(getattr(User, k))
+                value.append(v)
+        row = self._session.query(User).filter(tuple(
+            key)[0] == tuple(value)[0]).first()
+        if row is None:
+            raise NoResultFound
+        return row
