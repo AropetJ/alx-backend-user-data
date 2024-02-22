@@ -49,7 +49,7 @@ def login() -> str:
         return jsonify({"message": "wrong password"}), 401
 
 
-@app.route('/sessions', methods=['DELETE'], strict_slashes=False)
+@app.route("/sessions", methods=["DELETE"], strict_slashes=False)
 def logout() -> str:
     """DELETE /sessions
     Return: redirect to /
