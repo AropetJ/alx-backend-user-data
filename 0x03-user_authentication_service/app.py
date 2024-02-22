@@ -103,13 +103,13 @@ def update_password() -> str:
     email = request.form.get("email")
     reset_token = request.form.get("reset_token")
     new_password = request.form.get("new_password")
-    is_password_changed = False
+    password_state = False
     try:
         AUTH.update_password(reset_token, new_password)
-        is_password_changed = True
+        password_state = True
     except ValueError:
-        is_password_changed = False
-    if not is_password_changed:
+        password_state = False
+    if not password_state:
         abort(403)
     return jsonify({"email": email, "message": "Password updated"})
 
